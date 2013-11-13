@@ -1,0 +1,8 @@
+extends layout
+block viewVars
+    - var title = 'Home'
+block body
+    .container
+        h2 Home
+        - for(var prop in data)
+            p #{prop}: #{data[prop]}

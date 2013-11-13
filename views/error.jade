@@ -1,0 +1,20 @@
+extends layout
+
+block styles
+    style(type='text/css').
+        pre {
+            overflow: auto;
+            word-wrap: normal;
+            white-space: pre;
+        }
+
+block body
+    .container
+        h2 Error
+        - if ('undefined' !== typeof errors && errors.length)
+            - each error in errors
+                pre= error
+                br
+        - if ('undefined' !== typeof error && error.length)
+            span.label.label-danger.small-font
+                pre= error
