@@ -1,13 +1,14 @@
 /**
- * Created by shirish on 13/11/13.
- */
+* Created by shirish on 13/11/13.
+*/
 
 var request = require('superagent')
     , Errors = require('../model/errors').errors
 
+
 var moduleName = module.exports.name = 'remoteUser';
 
-var authConfig = null;
+var config = null;
 
 
 module.exports.init = function (appLoader) {
@@ -17,82 +18,42 @@ module.exports.init = function (appLoader) {
 }
 
 
-var load = module.exports.load = function (app, config) {
-    authConfig = config.app.auth;
+var load = module.exports.load = function (app, conf) {
+    config = conf;
 }
 
 var checkConfig = function () {
-    if(authConfig === null) {
+    if(config === null) {
         throw new Error('Module not configured: ' + moduleName);
     }
 }
 
 
-module.exports.authenticate = function (userId, password, callback) {
+module.exports.fetchProfile = function (accessToken, callback) {
     checkConfig();
 
+    var linkedinConfig = config.linkedin;
+    var url = linkedinConfig.apiRoot + '/people/~:(' + linkedinConfig.profileFields.join(',') + ')?format=json';
+    url += '&secure-urls=true&oauth2_access_token=' + encodeURIComponent(accessToken);
+
     request
-        .post(authConfig.uri + '/user/authentication')
-        .auth(authConfig.clientId, authConfig.clientSecret)
-        .send({
-            userId: userId,
-            password: password
-        })
+        .get(url)
         .set('Accept', 'application/json')
         .end(function (err, res) {
             if(err) {
-                return callback(Errors.AUTH_UNAVAILABLE, false, { message: Errors.AUTH_UNAVAILABLE.m });
+                console.log('remoteUser-err', err);
+                return callback(Errors.INVALID_LINKEDIN_PROFILE);
             }
             if (res.ok) {
-                return callback(null, res.body);
+                var json = res.body;
+                var profile = { provider: 'linkedin' };
+                profile.id = json.id;
+                profile.displayName = json.firstName + ' ' + json.lastName;
+                profile.name = { familyName: json.lastName, givenName: json.firstName };
+                if (json.emailAddress) { profile.emails = [{ value: json.emailAddress }]; }
+                profile._json = json;
+                return callback(null, profile);
             }
-            return callback(Errors.USER_NOT_FOUND, false);
-        });
-}
-
-
-module.exports.fetchToken = function (userId, password, callback) {
-    checkConfig();
-
-    request
-        .post(authConfig.uri + '/token')
-        .auth(authConfig.clientId, authConfig.clientSecret)
-        .send({
-            grant_type: 'password',
-            username: userId,
-            password: password
-        })
-        .set('Accept', 'application/json')
-        .end(function (err, res) {
-            if(err) {
-                return callback(Errors.AUTH_UNAVAILABLE, false, { message: Errors.AUTH_UNAVAILABLE.m });
-            }
-            if (res.ok) {
-                return callback(null, res.body);
-            }
-            return callback(Errors.USER_NOT_FOUND, false);
-        });
-}
-
-
-module.exports.register = function (userId, password, callback) {
-    checkConfig();
-
-    request
-        .post(authConfig.uri + '/user')
-        .auth(authConfig.clientId, authConfig.clientSecret)
-        .send({
-            userId: userId,
-            password: password
-        })
-        .set('Accept', 'application/json')
-        .end(function (err, res) {
-            if(err) {
-                return callback(Errors.AUTH_UNAVAILABLE, false);
-            }
-            if (res.ok) {
-                return callback(null, res.body);
-            }
-            return callback(Errors.USER_NOT_FOUND, false);
+            return callback(Errors.INVALID_LINKEDIN_PROFILE);
         });
 }

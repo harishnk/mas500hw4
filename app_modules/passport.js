@@ -4,7 +4,9 @@
 
 var passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy
+    , LinkedInStrategy = require('passport-linkedin-oauth2').Strategy
     , RemoteUser = require('../app_modules/remoteUser')
+    , util = require('util')
 
 
 var User = require('../model/user').User
@@ -32,18 +34,23 @@ var load = module.exports.load = function (app, config) {
 
 
 function registerStrategies(config) {
-    passport.use(new LocalStrategy(function (username, password, done) {
-            RemoteUser.authenticate(username, password, function (err, token) {
-                if(err || !token) {
-                    return done(null, false, { message: (err && err.m || Errors.AUTH_FAIL.m ) });
-                }
 
-                User.findOne({ userId: username }, function (err, userDoc) {
-                    if (err || !userDoc) {
-                        return done(null, false, { message: (err && err.m || Errors.USER_NOT_FOUND.m ) });
-                    }
-                    return done(null, userDoc.toObject());
-                });
+    passport.use(new LinkedInStrategy({
+            clientID: config.linkedin.apiKey,
+            clientSecret: config.linkedin.apiSecret,
+            callbackURL: config.linkedin.callbackURL,
+            scope: config.linkedin.scope,
+            profileFields: config.linkedin.profileFields
+        },
+        function(accessToken, refreshToken, profile, done) {
+            delete profile._raw;
+
+            User.createOrUpdate(accessToken, refreshToken, profile, function (err, userDoc, created) {
+                if (err || !userDoc) {
+                    console.log('createOrUpdate', err);
+                    return done(null, false, { message: ((err && err.m) || err)  });
+                }
+                return done(null, userDoc.toObject());
             });
         }
     ));
@@ -58,6 +65,7 @@ function registerStrategies(config) {
     passport.deserializeUser(function (sessionObj, done) {
         User.findOne({ userId: sessionObj.userId }, function (err, userDoc) {
             if (err || !userDoc) {
+                console.log('deserializeUser', err);
                 return done(err || Errors.USER_NOT_FOUND, false);
             }
             return done(null, userDoc.toObject());

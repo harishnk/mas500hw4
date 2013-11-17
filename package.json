@@ -22,7 +22,8 @@
     "express-namespace": "~0.1.1",
     "superagent": "~0.15.7",
     "connect-flash": "~0.1.1",
-    "connect-redis": "~1.4.6"
+    "connect-redis": "~1.4.6",
+    "passport-linkedin-oauth2": "~1.1.0"
   },
   "devDependencies": {
     "chai": "1.6.0",

@@ -11,12 +11,83 @@ module.exports.app.defaults = {
     api: {
         version: '1',
         path: '/api/v1'
-    },
-    auth: {
-        uri: 'http://127.0.0.1:5555/api/v1',
-        clientId: 'surveyengine',
-        clientSecret: 'magneto87'
     }
+};
+
+
+module.exports.linkedin = {};
+
+module.exports.linkedin.defaults = {
+    state: 's0m3c0mpl3xs3cr34',
+    apiRoot: 'https://api.linkedin.com/v1',
+    apiKey: '75f8nwd5xkko4v',
+    apiSecret: 'z5AMlvIiFv4CpWXN',
+    callbackURL: 'http://127.0.0.1:' + (module.exports.app.defaults.env.port) + '/auth/linkedin/callback',
+    scope: [
+        'r_fullprofile',
+        'r_emailaddress',
+        'r_contactinfo',
+        'r_network',
+        'rw_groups'
+    ],
+    profileFields: [
+        'id',
+        'first-name',
+        'last-name',
+        'maiden-name',
+        'formatted-name',
+        'phonetic-first-name',
+        'phonetic-last-name',
+        'formatted-phonetic-name',
+        'headline',
+        'location',
+        'industry',
+        'distance',
+        'relation-to-viewer:(distance)',
+        'current-share',
+        'num-connections',
+        'num-connections-capped',
+        'summary',
+        'specialties',
+        'positions',
+        'picture-url',
+        'site-standard-profile-request',
+        'api-standard-profile-request:(url,headers)',
+        'public-profile-url',
+        'last-modified-timestamp',
+        'proposal-comments',
+        'associations',
+        'interests',
+        'publications',
+        'patents',
+        'languages',
+        'skills',
+        'certifications',
+        'educations',
+        'courses',
+        'volunteer',
+        'three-current-positions',
+        'three-past-positions',
+        'num-recommenders',
+        'recommendations-received',
+        'mfeed-rss-url',
+        'following',
+        'job-bookmarks',
+        'suggestions',
+        'date-of-birth',
+        'member-url-resources',
+        'related-profile-views',
+        'honors-awards',
+        'email-address',
+        'phone-numbers',
+        'bound-account-types',
+        'im-accounts',
+        'main-address',
+        'twitter-accounts',
+        'primary-twitter-account',
+        'connections',
+        'group-memberships'
+    ]
 };
 
 
@@ -43,9 +114,9 @@ module.exports.db.test = {
 };
 
 
-module.exports.redis = {};
-
-module.exports.redis.defaults = {
-    host: '127.0.0.1',
-    port: '6379'
-};
+//module.exports.redis = {};
+//
+//module.exports.redis.defaults = {
+//    host: '127.0.0.1',
+//    port: '6379'
+//};

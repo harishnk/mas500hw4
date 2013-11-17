@@ -11,6 +11,8 @@ errorMsgs['USER_NOT_FOUND'] = "Invalid user";
 errorMsgs['USER_REG_ERROR'] = "Error registering user";
 errorMsgs['AUTH_FAIL'] = "Invalid username or password";
 errorMsgs['AUTH_UNAVAILABLE'] = "System unavailable. Please try again later.";
+errorMsgs['INVALID_LINKEDIN_PROFILE'] = "Failed to acquire details from LinkedIn.";
+
 
 Object.keys(errorMsgs).forEach(function (err) {
     var e = new Error(err);

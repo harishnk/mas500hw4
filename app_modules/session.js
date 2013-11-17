@@ -30,6 +30,8 @@ var load = module.exports.load = function (app, config) {
         console.log('Using redis as session store');
         var RedisStore = require(redisModule)(express);
         sessionConfig.store = new RedisStore(config.redis);
+    } else {
+        console.log('Using memory as session store');
     }
 
     app.use(express.cookieParser());

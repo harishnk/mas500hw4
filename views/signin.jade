@@ -2,6 +2,7 @@ extends layout
 block viewVars
     - var title = 'Sign In'
 
+
 block body
     .container
         form.form-signin(method='POST', style='max-width: 300px;')
@@ -11,8 +12,9 @@ block body
                     - each error in errors
                         span.label.label-danger.small-font= error
                         br
-            .form-group
-                input.form-control(type='text', name='username', placeholder='Username')
-            .form-group
-                input.form-control(type='password', name='password', placeholder='Password')
-            button.btn.btn-large.btn-primary(type='submit') Sign In
+            //.form-group
+            //    input.form-control(type='text', name='username', placeholder='Username')
+            //.form-group
+            //    input.form-control(type='password', name='password', placeholder='Password')
+            //button.btn.btn-large.btn-primary(type='submit') Sign In
+            a.btn.btn-large.btn-primary(href='/auth/linkedin') Sign in with LinkedIn
