@@ -109,7 +109,7 @@ load_env() {
 }
 
 
-env() {
+print_env() {
     echo "[$SECTION_ENV]"
     load_env 1
 }

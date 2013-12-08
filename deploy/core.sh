@@ -53,7 +53,7 @@ load() {
   log "Loading Server..."
   mkdir -p "${APP_ROOT}/logs"
   pm2 dump
-  pm2 start "${APP_ROOT}/app.js" \
+  run pm2 start "${APP_ROOT}/app.js" \
       --name "${APP_NAME}" \
       --instances "${INSTANCES}" \
       --pid "${APP_ROOT}/logs/app.pid" \
@@ -113,7 +113,7 @@ source "$APP_ROOT/deploy/conf.sh"
 set_config_path "$APP_ROOT/$APP_CONF"
 require_env $SECTION_ENV
 load_env
-load_env 1
+print_env
 
 if [ "$#" -eq 0 ]; then
   echo "Please specify an action: [setup|setup_db|load|unload|reload|list|env|npm_install|start]"
