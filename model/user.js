@@ -21,7 +21,7 @@ var userSchema = new Schema({
     displayName:    { type: String, required: true },
     profile:        { type: Schema.Types.Mixed, required: true },
     accessToken:    { type: String, required: true },
-    refreshToken:   { type: String, required: true },
+    refreshToken:   { type: String },
     created:        { type: Date, required: true, default: Date.now },
     modified:       { type: Date }
 });
