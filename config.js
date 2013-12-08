@@ -1,11 +1,12 @@
 module.exports.activeEnv = process.env.NODE_ENV || 'development';
 
+var port = process.env.PORT || 3000;
 
 module.exports.app = {};
 
 module.exports.app.defaults = {
     env: {
-        port: process.env.PORT || 3000,
+        port: port,
         rootDir: __dirname
     },
     api: {
@@ -37,7 +38,7 @@ module.exports.linkedin.defaults = {
     apiRoot: 'https://api.linkedin.com/v1',
     apiKey: '75f8nwd5xkko4v',
     apiSecret: 'z5AMlvIiFv4CpWXN',
-    callbackURL: 'http://127.0.0.1:' + (module.exports.app.defaults.env.port) + '/auth/linkedin/callback',
+    callbackURL: 'http://127.0.0.1:' + port + '/auth/linkedin/callback',
     scope: [
         'r_fullprofile',
         'r_emailaddress',
@@ -105,3 +106,9 @@ module.exports.linkedin.defaults = {
     ]
 };
 
+
+module.exports.linkedin.production = {
+    apiKey: '75qhsxeag6smel',
+    apiSecret: 'F0FxGXrGMRpegpi4',
+    callbackURL: 'http://buggycoder.com:' + port + '/auth/linkedin/callback'
+};
