@@ -22,6 +22,7 @@ var load = module.exports.load = function (app, config, appLoader, waitKey, call
     mongoose.connect(dbUri, function (err) {
         if (err) {
             debug(err);
+            console.log('Failed to connect to %s', dbUri);
             return callback(err, waitKey);
         }
         console.log('Connected to %s', dbUri);
