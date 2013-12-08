@@ -1,4 +1,4 @@
-module.exports.activeEnv = process.NODE_ENV || 'development';
+module.exports.activeEnv = process.env.NODE_ENV || 'development';
 
 
 module.exports.app = {};
