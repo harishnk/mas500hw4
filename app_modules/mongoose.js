@@ -11,6 +11,7 @@ var moduleName = module.exports.name = 'mongoose';
 
 module.exports.init = function (appLoader) {
     var waitKey = appLoader.hook(appLoader.events.config, { priority: 0, name: moduleName, wait: true }, function (app, config, callback) {
+        console.log('ENV: %s', config.activeEnv);
         load(app, config, appLoader, waitKey, callback);
     });
 }
