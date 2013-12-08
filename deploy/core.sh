@@ -113,6 +113,7 @@ source "$APP_ROOT/deploy/conf.sh"
 set_config_path "$APP_ROOT/$APP_CONF"
 require_env $SECTION_ENV
 load_env
+load_env 1
 
 if [ "$#" -eq 0 ]; then
   echo "Please specify an action: [setup|setup_db|load|unload|reload|list|env|npm_install|start]"
