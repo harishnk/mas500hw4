@@ -4,8 +4,11 @@
 
 var mongoose = require('mongoose')
     , Schema = mongoose.Schema
+    , ProfileModel = require('./profile')
+    , Profile = ProfileModel.Profile
     , Errors = require('./errors').errors
     , _ = require('lodash')
+    , async = require('async')
 
 
 
@@ -57,6 +60,7 @@ userSchema.statics.register = function (userAttrs, callback) {
        if (err) {
            return callback(Errors.DB_FAIL.debug(err));
        }
+       console.log('created', newUser.profile.id);
        return callback(null, newUser, true);
     });
 }
@@ -82,14 +86,37 @@ userSchema.statics.createOrUpdate = function (accessToken, refreshToken, profile
         $set: userAttrs
     };
 
+    var done = function (err, userDoc, isNew) {
+        if (err) {
+            return callback(err);
+        }
+
+        // console.log('total connections', userDoc.profile.connections._total);
+        var profiles = userDoc.profile.connections.values;
+        var userProfile = _.pick(userDoc.profile, ProfileModel.PROFILE_ATTRS);
+        userProfile.id = userDoc.profile.id;
+        profiles.unshift(userProfile);
+
+        async.eachLimit(profiles, 10, function (profile, done) {
+            // console.log('createIfNotExists', profile.id);
+            Profile.createIfNotExists(profile, done);
+        }, function (err) {
+            if (err) {
+                console.error(err);
+            }
+            return callback(null, userDoc, isNew);
+        });
+    };
+
     var self = this;
     this.findOneAndUpdate({ linkedinId: profile._json.id }, updates, function (err, userDoc) {
         if (err) {
-            return callback(Errors.DB_FAIL.debug(err));
+            return done(Errors.DB_FAIL.debug(err));
         }
 
         if (!!userDoc) {
-            return callback(null, userDoc, false);
+            console.log('updated', userDoc.profile.id);
+            return done(null, userDoc, false);
         }
 
         // Create new user
@@ -100,7 +127,7 @@ userSchema.statics.createOrUpdate = function (accessToken, refreshToken, profile
             userAttrs[k] = profile._json[MAP_PROFILE_ATTRS[k]];
         });
 
-        return self.register(userAttrs, callback);
+        return self.register(userAttrs, done);
     });
 }
 

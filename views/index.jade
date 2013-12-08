@@ -2,6 +2,9 @@ extends layout
 
 block viewVars
     - var title = 'Home'
+    - delete data.profile.connections
+    - delete data.profile.groupMemberships
+    - delete data.profile.following
 
 block styles
     style(type='text/css').
