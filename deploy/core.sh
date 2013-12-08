@@ -53,7 +53,7 @@ load() {
   log "Loading Server..."
   mkdir -p "${APP_ROOT}/logs"
   pm2 dump
-  run pm2 start "${APP_ROOT}/app.js" \
+  pm2 start "${APP_ROOT}/app.js" \
       --name "${APP_NAME}" \
       --instances "${INSTANCES}" \
       --pid "${APP_ROOT}/logs/app.pid" \
