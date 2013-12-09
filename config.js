@@ -103,6 +103,31 @@ module.exports.linkedin.defaults = {
         'primary-twitter-account',
         'connections',
         'group-memberships'
+    ],
+    connProfileFields: [
+        'id',
+        'first-name',
+        'last-name',
+        'maiden-name',
+        'formatted-name',
+        'phonetic-first-name',
+        'phonetic-last-name',
+        'formatted-phonetic-name',
+        'headline',
+        'location',
+        'industry',
+        'distance',
+        'relation-to-viewer:(distance)',
+        'current-share',
+        'num-connections',
+        'num-connections-capped',
+        'summary',
+        'specialties',
+        'positions',
+        'picture-url',
+        'site-standard-profile-request',
+        'api-standard-profile-request:(url,headers)',
+        'public-profile-url'
     ]
 };
 
