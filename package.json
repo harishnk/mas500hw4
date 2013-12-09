@@ -1,0 +1,32 @@
+{
+  "name": "buggycoder-boilerplate",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "test": "mocha --reporter spec"
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "~0.35.0",
+    "async": "~0.2.9",
+    "validator": "~2.0.0",
+    "connect-ensure-login": "~0.1.1",
+    "passport-local": "~0.1.6",
+    "passport": "~0.1.17",
+    "mongoose": "~3.8.0",
+    "debug": "~0.7.3",
+    "lodash": "~2.2.1",
+    "hiredis": "~0.1.15",
+    "node-uuid": "~1.4.1",
+    "express-namespace": "~0.1.1",
+    "superagent": "~0.15.7",
+    "connect-flash": "~0.1.1",
+    "connect-redis": "~1.4.6",
+    "passport-linkedin-oauth2": "~1.1.0"
+  },
+  "devDependencies": {
+    "chai": "1.6.0",
+    "supertest-chai": "0.0.7"
+  }
+}

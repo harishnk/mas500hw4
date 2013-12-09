@@ -1,0 +1,28 @@
+extends layout
+
+block viewVars
+    - var title = 'Home'
+    - delete data.profile.connections
+    - delete data.profile.groupMemberships
+    - delete data.profile.following
+
+block styles
+    style(type='text/css').
+        pre {
+            overflow: auto;
+            word-wrap: normal;
+            white-space: pre;
+        }
+
+block body
+    .container
+        h2 Home
+        pre #{JSON.stringify(data, undefined, 2)}
+        //- for(var prop in data)
+        //    - if(typeof data[prop] === 'object')
+        //        pre #{prop}:
+        //        - for(var subprop in data[prop])
+        //            #{subprop}: #{data[prop][subprop]}
+        //
+        //    - else
+        //        p #{prop}: #{data[prop]}

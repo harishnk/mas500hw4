@@ -1,0 +1,24 @@
+extends layout
+block viewVars
+    - var title = 'Register'
+
+block body
+    .container
+        form.form-register(method='POST', style='max-width: 300px;')
+            h2.form-register-heading Register
+            - if ('undefined' !== typeof errors && errors.length)
+                .form-group#form-login-errors
+                    - each error in errors
+                        span.label.label-danger.small-font= error
+                        br
+            .form-group
+                input.form-control(type='text', name='username', placeholder='Username')
+            .form-group
+                input.form-control(type='text', name='fname', placeholder='First Name')
+            .form-group
+                input.form-control(type='text', name='lname', placeholder='Last Name')
+            .form-group
+                input.form-control(type='text', name='email', placeholder='Email')
+            .form-group
+                input.form-control(type='password', name='password', placeholder='Password')
+            button.btn.btn-large.btn-primary(type='submit') Register
