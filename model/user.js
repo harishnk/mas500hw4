@@ -5,6 +5,7 @@
 var mongoose = require('mongoose')
     , Schema = mongoose.Schema
     , ProfileModel = require('./profile')
+    , RemoteUser = require('../app_modules/remoteUser')
     , Profile = ProfileModel.Profile
     , Errors = require('./errors').errors
     , _ = require('lodash')
@@ -99,7 +100,16 @@ userSchema.statics.createOrUpdate = function (accessToken, refreshToken, profile
 
         async.eachLimit(profiles, 10, function (profile, done) {
             // console.log('createIfNotExists', profile.id);
-            Profile.createIfNotExists(profile, done);
+            if (profile.id === 'private') {
+                return done(null);
+            }
+
+            RemoteUser.fetchConnProfile(profile.id, userDoc.accessToken, function (err, basicProfile) {
+                if (err) {
+                    return done(err);
+                }
+                Profile.createIfNotExists(basicProfile, done);
+            });
         }, function (err) {
             if (err) {
                 console.error(err);

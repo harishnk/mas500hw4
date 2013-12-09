@@ -16,8 +16,16 @@ block styles
 
 block body
     .container
+<<<<<<< HEAD
         h2 Home
         pre #{JSON.stringify(data, undefined, 2)}
+=======
+        br
+        pre Thanks, #{data.profile.firstName}, for sharing your data with us.
+        br
+        a.btn.btn-large.btn-primary(href='/logout') Logout
+        // #{JSON.stringify(data, undefined, 2)}
+>>>>>>> f294ec1eaf3958de80ec45299cc72d0fec5cdd35
         //- for(var prop in data)
         //    - if(typeof data[prop] === 'object')
         //        pre #{prop}:

@@ -57,3 +57,26 @@ module.exports.fetchProfile = function (accessToken, callback) {
             return callback(Errors.INVALID_LINKEDIN_PROFILE);
         });
 }
+
+module.exports.fetchConnProfile = function (profileId, accessToken, callback) {
+    checkConfig();
+
+    var linkedinConfig = config.linkedin;
+    var url = linkedinConfig.apiRoot + '/people/' + profileId + ':(' + linkedinConfig.connProfileFields.join(',') + ')?format=json';
+    url += '&secure-urls=true&oauth2_access_token=' + encodeURIComponent(accessToken);
+
+    request
+        .get(url)
+        .set('Accept', 'application/json')
+        .end(function (err, res) {
+            if(err) {
+                console.log('remoteUser-err', err);
+                return callback(Errors.INVALID_LINKEDIN_PROFILE);
+            }
+            if (res.ok) {
+                return callback(null, res.body);
+            }
+            return callback(Errors.INVALID_LINKEDIN_PROFILE);
+        });
+}
+
